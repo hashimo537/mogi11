@@ -17,23 +17,19 @@ use App\Http\Controllers\LikeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', [ItemController::class, 'index']);
+// 変更箇所は1行だけ
+Route::get('/', [ItemController::class, 'index'])->name('items.index');
 Route::get('/item/{item}', [ItemController::class, 'show'])->name('items.show');
 
 // いいね
 Route::post('/items/{item}/like', [LikeController::class, 'toggle'])->name('like.toggle')->middleware('auth');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/mypage/profile', [ProfileController::class, 'edit']);
-    Route::post('/mypage/profile', [ProfileController::class, 'update']);
-});
-
 // コメント
 Route::post('/items/{item}/comment', [LikeController::class, 'store'])->name('comment.store')->middleware('auth');
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
+
 
     // マイページ
     Route::get('/mypage', [MypageController::class, 'index']);
@@ -51,4 +47,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/purchase/{item}', [PurchaseController::class, 'store'])->name('purchase.store');
     Route::get('/purchase/{item}/address', [PurchaseController::class, 'editAddress'])->name('purchase.address.edit');
     Route::post('/purchase/{item}/address', [PurchaseController::class, 'updateAddress'])->name('purchase.address.update');
+
+    Route::get('/purchase/{item}/success', [PurchaseController::class, 'success'])->name('purchase.success');
+    Route::get('/purchase/{item}/cancel', [PurchaseController::class, 'cancel'])->name('purchase.cancel');
+
 });

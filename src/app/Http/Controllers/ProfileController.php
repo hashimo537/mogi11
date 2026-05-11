@@ -14,25 +14,34 @@ class ProfileController extends Controller
     }
 
     // 更新処理
-    public function update(ProfileRequest $request)
-    {
-        $user = auth()->user();
+public function update(ProfileRequest $request)
+{
+    $user = auth()->user();
 
-        // ユーザー名更新
-        $user->update([
-            'name' => $request->name,
-        ]);
+    // ユーザー名更新
+    $user->update([
+        'name' => $request->name,
+    ]);
 
-        // プロフィール更新 or 作成
-        $user->profile()->updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'postal_code' => $request->postal_code,
-                'address' => $request->address,
-                'building' => $request->building,
-            ]
-        );
+    // 画像パスを先に準備
+    $profileData = [
+        'postal_code' => $request->postal_code,
+        'address'     => $request->address,
+        'building'    => $request->building,
+    ];
 
-        return redirect('/mypage');
+    // 画像がアップロードされた場合のみ追加
+    if ($request->hasFile('image')) {
+        $path = $request->file('image')->store('profiles', 'public');
+        $profileData['image'] = $path;
     }
+
+    // まとめてupdateOrCreate
+    $user->profile()->updateOrCreate(
+        ['user_id' => $user->id],
+        $profileData
+    );
+
+    return redirect('/mypage');
+}
 }

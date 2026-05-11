@@ -40,3 +40,11 @@ services:
             - mysql
         ports:
             - 8080:80
+
+    # ↓ここから追加
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+            - "8025:8025"  # Mailhog管理画面
+            - "1025:1025"  # SMTPポート
+

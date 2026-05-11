@@ -17,6 +17,7 @@ class Item extends Model
         'price',
         'condition',
         'image',
+        'is_sold',
     ];
 
 

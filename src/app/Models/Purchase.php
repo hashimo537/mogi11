@@ -23,4 +23,10 @@ class Purchase extends Model
     {
     return $this->hasOne(ShippingAddress::class);
     }
+
+    protected $fillable = [
+    'user_id',
+    'item_id',
+    'payment_method',
+    ];
 }

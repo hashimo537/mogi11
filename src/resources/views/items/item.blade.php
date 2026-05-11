@@ -6,6 +6,14 @@
 
 @section('content')
 
+@if (session('error'))
+    <p style="color:red;">{{ session('error') }}</p>
+@endif
+
+@if (session('success'))
+    <p style="color:green;">{{ session('success') }}</p>
+@endif
+
 <div class="tabs">
     <a href="/?{{ request('search') ? 'search=' . request('search') : '' }}" 
        class="{{ request('tab') !== 'mylist' ? 'active' : '' }}">おすすめ</a>
