@@ -9,7 +9,7 @@ use App\Models\ShippingAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PurchaseRequest;
-use App\Http\Requests\AddressRequest; 
+use App\Http\Requests\AddressRequest;
 
 class PurchaseController extends Controller
 {
@@ -154,7 +154,7 @@ class PurchaseController extends Controller
     // ========================================
     // 配送先の更新（セッションに保存）
     // ========================================
-    public function updateAddress(ShippingAddressRequest $request, Item $item)
+    public function updateAddress(AddressRequest $request, Item $item)
     {
         session([
             'shipping_address_' . $item->id => [

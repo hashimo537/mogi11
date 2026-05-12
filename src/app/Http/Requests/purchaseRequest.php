@@ -22,19 +22,18 @@ class purchaseRequest extends FormRequest
      * @return array
      */
     public function rules(): array
-{
-    return [
+    {
+        return [
         'payment_method' => ['required'],
-    ];
-}
+        ];
+    }
 
-public function messages(): array
-{
-    return [
+    public function messages(): array
+    {
+        return [
         'payment_method.required' => '支払い方法を選択してください',
-    ];
-}
-    
+        ];
+    }
 
 
 }

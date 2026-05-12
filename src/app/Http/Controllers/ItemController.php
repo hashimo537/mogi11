@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ExhibitionRequest;
 
 class ItemController extends Controller
 {
@@ -45,16 +46,8 @@ class ItemController extends Controller
         return view('items.sell' , compact('categories' , 'conditions'));
     }
 
-    public function store(Request $request)
+    public function store(ExhibitionRequest $request)
 {
-    // バリデーション
-    $validated = $request->validate([
-        'name' => 'required|max:255',
-        'price' => 'required|integer',
-        'description' => 'required',
-        'image' => 'required|image',
-        'categories' => 'required|array',
-    ]);
 
     // 画像保存
     $path = $request->file('image')->store('items', 'public');

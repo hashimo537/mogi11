@@ -21,10 +21,10 @@ class ProfileRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'image'       => ['nullable', 'image', 'mimes:jpeg,png'],
+            'image'       => ['nullable', 'file', 'image', 'mimes:jpeg,png'],
             'name'        => ['required', 'string', 'max:20'],
             'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
             'address'     => ['required', 'string'],

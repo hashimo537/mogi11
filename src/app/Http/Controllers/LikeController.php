@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Requests\CommentRequest;
+
 
 
 class LikeController extends Controller
@@ -26,7 +28,8 @@ class LikeController extends Controller
         return back();
     }
 
-    public function store(Request $request, Item $item)
+    // コメント
+    public function store(CommentRequest $request, Item $item)
     {
         $request->validate([
     'comment' => 'required|string|max:255',
