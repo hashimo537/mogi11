@@ -32,14 +32,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     // マイページ
-    Route::get('/mypage', [MypageController::class, 'index']);
+    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage');
 
     // プロフィール
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // 出品
-    Route::get('/sell', [ItemController::class, 'create']);
+    Route::get('/sell', [ItemController::class, 'create'])->name('sell');;
     Route::post('/items/sell', [ItemController::class, 'store']);
 
     // 購入

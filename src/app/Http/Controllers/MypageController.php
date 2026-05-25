@@ -15,9 +15,10 @@ class MypageController extends Controller
         $sellItems = $user->items;
 
         // 購入した商品
-        $buyItems = Purchase::with('item')
-            ->where('user_id', $user->id)
-            ->get();
+        $buyItems = $user->purchases;
+
+
+
 
         return view('login/mypage', compact('user', 'sellItems', 'buyItems'));
     }

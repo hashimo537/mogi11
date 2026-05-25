@@ -3,11 +3,16 @@
    ======================================== */
 
 .purchase-container {
-    display: flex;
-    gap: 40px;
     max-width: 1100px;
     margin: 40px auto;
     padding: 0 24px;
+    align-items: flex-start;
+}
+
+#purchase-form {
+    display: flex;
+    gap: 60px;
+    width: 100%;
     align-items: flex-start;
 }
 
@@ -28,7 +33,7 @@
 }
 
 .purchase-item-image {
-    width: 150px;
+    width: 160px;
     height: 150px;
     flex-shrink: 0;
     background-color: #d9d9d9;
@@ -43,14 +48,14 @@
 }
 
 .purchase-item-name {
-    font-size: 18px;
+    font-size: 30px;
     font-weight: bold;
     margin-bottom: 8px;
     color: #333;
 }
 
 .purchase-item-price {
-    font-size: 20px;
+    font-size: 25px;
     font-weight: bold;
     color: #333;
 }
@@ -98,7 +103,7 @@
 
 /* 支払い方法セレクト */
 .payment-select {
-    width: 240px;
+    width: 280px;
     padding: 10px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -107,6 +112,7 @@
     background-color: #fff;
     appearance: auto;
     cursor: pointer;
+    margin-left: 40px;
 }
 
 .payment-select:focus {
@@ -124,13 +130,12 @@
 /* 配送先住所ボックス */
 .shipping-address-box {
     display: inline-block;
-    border: 1px solid #3b82f6;
-    border-radius: 4px;
     padding: 10px 16px;
-    font-size: 14px;
+    font-size: 15px;
     color: #333;
     line-height: 1.8;
     min-width: 200px;
+    margin-left: 40px;
 }
 
 .no-address {
@@ -152,7 +157,7 @@
    ======================================== */
 
 .purchase-right {
-    width: 360px;
+    width: 380px;
     flex-shrink: 0;
 }
 
@@ -168,7 +173,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
+    padding: 24px 28px;
     font-size: 15px;
     color: #333;
 }
@@ -211,8 +216,9 @@
    レスポンシブ
    ======================================== */
 
+
 @media (max-width: 768px) {
-    .purchase-container {
+    #purchase-form {
         flex-direction: column;
         gap: 0;
     }

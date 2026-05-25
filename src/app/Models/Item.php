@@ -52,8 +52,19 @@ public function getConditionLabelAttribute(): string
     return self::conditionLabels()[$this->condition] ?? '未設定';
 }
 
+    public function getBrandAttribute($value): string
+    {
+        return $value ?? '未設定';
+    }
 
-// いいね
+    public function getColorAttribute($value): string
+    {
+        return $value ?? '未設定';
+    }
+
+
+
+    // いいね
 public function likes()
 {
     return $this->hasMany(Like::class);

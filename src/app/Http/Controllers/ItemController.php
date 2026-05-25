@@ -10,7 +10,8 @@ use App\Http\Requests\ExhibitionRequest;
 
 class ItemController extends Controller
 {
-    public function index()
+    // 商品一覧表示
+        public function index()
 {
     $search = request('search');
 
@@ -32,12 +33,15 @@ class ItemController extends Controller
 
 }
 
+    // 商品詳細表示
     public function show(Item $item)
     {
         $item->load(['likedUsers', 'comments.user', 'categories']);
 
         return view('items.show', compact('item'));
     }
+
+    // 出品画面表示
 
     public function create()
     {
@@ -46,6 +50,7 @@ class ItemController extends Controller
         return view('items.sell' , compact('categories' , 'conditions'));
     }
 
+    // 
     public function store(ExhibitionRequest $request)
 {
 

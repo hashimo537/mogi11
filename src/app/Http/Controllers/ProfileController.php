@@ -36,7 +36,7 @@ public function update(ProfileRequest $request)
         $profileData['image'] = $path;
     }
 
-    // まとめてupdateOrCreate
+    // まとめてupdateOrCreate（user_idが一致するプロフィールが存在するか？）
     $user->profile()->updateOrCreate(
         ['user_id' => $user->id],
         $profileData

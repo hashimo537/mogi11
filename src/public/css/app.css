@@ -5,32 +5,52 @@ body {
 
 /* ヘッダー */
 .header {
+    
     background: #000;
     color: #fff;
     padding: 10px 20px;
+    
 }
 
 .header__inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 20px;
+    /* justify-content: space-between; */
 }
 
 .header__logo {
     color: #fff;
     text-decoration: none;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 26px;
+}
+
+.header__search-form {
+    flex: 1; /* 残りの横幅を埋める */
+    margin: 0 80px; /* 左右に余白 */
 }
 
 .search {
-    width: 40%;
+    width:  100%;
     padding: 8px;
     border-radius: 5px;
     border: none;
+    box-sizing: border-box;
 }
 
-/* ログアウト */
+.nav {
+    display: flex;
+    /* 横並びにする */
+    align-items: center;
+    /* 縦方向中央揃え */
+    gap: 15px;
+    /* 要素間の余白 */
+    white-space: nowrap;
+    /* 改行させない */
+}
+
+/* ログアウトボタン */
 .link-like {
     background: none;
     border: none;
@@ -41,17 +61,46 @@ body {
     font: inherit;
 }
 
-.nav a {
+.nav__link {
     color: #fff;
-    margin-left: 15px;
     text-decoration: none;
+    /* margin-left は gap に任せるので不要 */
 }
 
-.nav .btn {
+.nav__btn {
     background: #fff;
     color: #000;
-    padding: 5px 10px;
+    padding: 5px 15px;
     border-radius: 5px;
+    text-decoration: none;
+    /* aタグの下線を消す */
 }
 
+
+/* --- スマホ用（600px以下に適用） --- */
+@media (max-width: 600px) {
+
+    .header__inner {
+        flex-wrap: wrap;
+    }
+
+    .header__search-form {
+        order: 3;
+        /* 検索を3番目に移動 */
+        width: 80%;
+        flex: none;
+    }
+
+    .header__logo {
+        order: 1;
+        /* ロゴを1番目 */
+    }
+
+    .nav {
+        order: 2;
+        /* navを2番目 */
+        margin-left: auto;
+        /* ロゴと反対側に寄せる */
+    }
+}
 
