@@ -18,6 +18,7 @@ class Item extends Model
         'condition',
         'image',
         'is_sold',
+        'color',
     ];
 
 

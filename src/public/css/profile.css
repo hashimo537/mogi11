@@ -1,38 +1,99 @@
-.body {
-    background-color: #F1ECE7;
+/* ========================================
+   プロフィール設定画面
+   ======================================== */
+
+.profile-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 0 24px;
 }
 
-.profile-form__inner {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-}
-
-.profile-form__heading {
+.profile-title {
     text-align: center;
-    margin-top: 60px;
     font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 40px;
 }
 
-.profile-form__form {
-    width: 400px;
+/* ========================================
+   プロフィール画像
+   ======================================== */
+
+.profile-image-group {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 40px;
 }
 
-@media screen and (max-width: 1200px) {
-    .login-form__form {
-        width: 60vw;
-    }
+/* 画像プレビュー枠 */
+.profile-image-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.profile-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 画像を枠内に綺麗に収める */
+    display: block;
+}
+
+/* 画像なしのデフォルト丸 */
+.profile-image-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ccc;
+}
+
+/* 「画像を選択する」ボタン */
+.profile-image-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
+    color: #ff5a5f;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.profile-image-btn:hover {
+    background-color: #ff5a5f;
+    color: #fff;
+}
+
+/* file inputは非表示にしてlabelで操作 */
+.profile-image-input {
+    display: none;
+}
+
+/* ========================================
+   フォームグループ
+   ======================================== */
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .profile-form__group {
-    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
 }
 
-
 .profile-form__label {
-    display: block;
-    margin-bottom: 8px;
     font-weight: bold;
+    font-size: 14px;
+    color: #333;
 }
 
 .profile-form__input {
@@ -40,38 +101,52 @@
     height: 45px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 0 10px;
+    padding: 0 12px;
+    font-size: 14px;
+    box-sizing: border-box;
 }
 
+.profile-form__input:focus {
+    outline: none;
+    border-color: #999;
+}
 
-.profile-form__error-message {
-    height: 20px;
-    color: #ff0000;
-    text-align: left;
+/* エラーメッセージ */
+.error-message {
+    color: #e53e3e;
     font-size: 12px;
+    margin: 0;
 }
 
-
+/* ========================================
+   更新ボタン
+   ======================================== */
 
 .profile-form__btn {
     width: 100%;
-    margin-top: 40px;
-    height: 45px;
-    background-color: #FF5A5A;
+    height: 48px;
+    margin-top: 16px;
+    background-color: #ff5a5f;
     color: #fff;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
+    font-size: 16px;
     font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
+.profile-form__btn:hover {
+    background-color: #c0272f;
+}
 
+/* ========================================
+   レスポンシブ
+   ======================================== */
 
-.login__button-submit {
-    display: block;
-    text-align: center;
-    margin-top: 16px;
-    color: #007BFF;
-    text-decoration: none;
-    font-size: 14px;
+@media (max-width: 600px) {
+    .profile-image-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }

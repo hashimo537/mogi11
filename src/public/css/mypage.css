@@ -48,6 +48,13 @@ body {
     overflow: hidden;
 }
 
+.mypage__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .default-circle {
     width: 100px;
     height: 100px;

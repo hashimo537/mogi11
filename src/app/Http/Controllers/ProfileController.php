@@ -42,6 +42,6 @@ public function update(ProfileRequest $request)
         $profileData
     );
 
-    return redirect('/mypage');
+    return redirect('/');
 }
 }

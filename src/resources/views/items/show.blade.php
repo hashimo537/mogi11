@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/show.css') }}">
@@ -62,7 +63,11 @@
             </div>
 
             {{-- 購入ボタン --}}
-            <a class="purchase-btn" href="{{ route('purchase.show', $item->id) }}" >購入手続きへ</a>
+            @if ($item->is_sold)
+                <span class="purchase-btn-disabled">売り切れ</span>
+            @else
+                <a class="purchase-btn" href="{{ route('purchase.show', $item->id) }}">購入手続きへ</a>
+            @endif
 
             {{-- 商品説明 --}}
             <div class="description">
@@ -79,9 +84,11 @@
 
                 {{-- 複数カテゴリ --}}
                 <p>カテゴリー：
-                <span class="category">
-                    {{ $item->categories->pluck('name')->join(', ') ?? '未設定' }}
-                </span>
+                    @forelse ($item->categories as $category)
+                        <span class="category">{{ $category->name }}</span>
+                    @empty
+                        <span>未設定</span>
+                    @endforelse
                 </p>
 
                 <p>商品の状態：{{ $item->condition_label }}</p>

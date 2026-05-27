@@ -20,7 +20,23 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\RegisterResponse::class,
+            \App\Http\Responses\RegisterResponse::class
+        );
+
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\LoginResponse::class,
+            \App\Http\Responses\LoginResponse::class
+        );
+
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\VerifyEmailResponse::class,
+            \App\Http\Responses\VerifyEmailResponse::class
+        );
+
+
+
     }
 
     /**
@@ -45,17 +61,7 @@ class FortifyServiceProvider extends ServiceProvider
         }
     });
 
-    Fortify::redirects('login', function () {
-        $user = auth()->user();
 
-        if (!$user->profile) {
-            return '/profile/edit';;
-        }
-
-        return '/mypage';
-    });
-
-        Fortify::redirects('register', '/email/verify');
 
 
         RateLimiter::for('login', function (Request $request) {
