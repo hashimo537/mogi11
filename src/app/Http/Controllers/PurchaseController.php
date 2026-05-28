@@ -26,8 +26,8 @@ class PurchaseController extends Controller
 
         return [
             'postal_code' => $profile->postal_code ?? null,
-            'address'     => $profile->address ?? null,
-            'building'    => $profile->building ?? null,
+            'address' => $profile->address ?? null,
+            'building' => $profile->building ?? null,
         ];
     }
 
@@ -73,19 +73,21 @@ class PurchaseController extends Controller
         // Stripeの決済画面を作成
         $session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency'     => 'jpy',       // 日本円
-                    'product_data' => [
-                        'name' => $item->name,     // 商品名
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'jpy',       // 日本円
+                        'product_data' => [
+                            'name' => $item->name,     // 商品名
+                        ],
+                        'unit_amount' => $item->price, // 金額
                     ],
-                    'unit_amount'  => $item->price, // 金額
-                ],
-                'quantity' => 1,
-            ]],
-            'mode'        => 'payment',
+                    'quantity' => 1,
+                ]
+            ],
+            'mode' => 'payment',
             'success_url' => route('purchase.success', $item->id), // 決済成功後に戻るURL
-            'cancel_url'  => route('purchase.cancel', $item->id),  // キャンセル時に戻るURL
+            'cancel_url' => route('purchase.cancel', $item->id),  // キャンセル時に戻るURL
         ]);
 
         // Stripeの決済画面へリダイレクト
@@ -109,16 +111,16 @@ class PurchaseController extends Controller
         // 決済成功後にDBへ保存
         DB::transaction(function () use ($item, $addressData, $paymentMethod) {
             $purchase = Purchase::create([
-                'user_id'        => Auth::id(),
-                'item_id'        => $item->id,
+                'user_id' => Auth::id(),
+                'item_id' => $item->id,
                 'payment_method' => $paymentMethod,
             ]);
 
             ShippingAddress::create([
                 'purchase_id' => $purchase->id,
                 'postal_code' => $addressData['postal_code'],
-                'address'     => $addressData['address'],
-                'building'    => $addressData['building'] ?? null,
+                'address' => $addressData['address'],
+                'building' => $addressData['building'] ?? null,
             ]);
 
             $item->update(['is_sold' => true]);
@@ -159,8 +161,8 @@ class PurchaseController extends Controller
         session([
             'shipping_address_' . $item->id => [
                 'postal_code' => $request->postal_code,
-                'address'     => $request->address,
-                'building'    => $request->building,
+                'address' => $request->address,
+                'building' => $request->building,
             ]
         ]);
 

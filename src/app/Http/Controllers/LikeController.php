@@ -32,15 +32,15 @@ class LikeController extends Controller
     public function store(CommentRequest $request, Item $item)
     {
         $request->validate([
-    'comment' => 'required|string|max:255',
-    ]);
+            'comment' => 'required|string|max:255',
+        ]);
 
-    Comment::create([
-    'user_id' => auth()->id(),
-    'item_id' => $item->id,
-    'comment' => $request->comment,
-    ]);
+        Comment::create([
+            'user_id' => auth()->id(),
+            'item_id' => $item->id,
+            'comment' => $request->comment,
+        ]);
 
-    return redirect()->route('items.show', $item->id);  
+        return redirect()->route('items.show', $item->id);
     }
 }

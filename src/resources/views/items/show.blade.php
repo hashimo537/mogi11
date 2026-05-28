@@ -1,7 +1,6 @@
-
 @extends('layouts.app')
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/show.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/show.css') }}">
 @endsection
 
 
@@ -13,7 +12,7 @@
         <div class="item-image">
             <img src="{{ asset('storage/' . $item->image) }}" alt="alt={{ $item->name }}">
 
-                @if ($item->is_sold)
+            @if ($item->is_sold)
                 <span class="sold">Sold</span>
             @endif
         </div>
@@ -35,29 +34,29 @@
 
                 {{-- いいね --}}
                 @auth
-            <form action="{{ route('like.toggle', $item->id) }}" method="POST" class="like-form">
-                @csrf
-                <button type="submit" class="like-btn">
-                    @if ($item->likedUsers->contains(auth()->id()))
-                        <img src="{{ asset('storage/ハートロゴ_ピンク.png') }}" alt="いいね済み" class="like-icon">
-                    @else
-                        <img src="{{ asset('storage/ハートロゴ_デフォルト.png') }}" alt="いいね" class="like-icon">
-                    @endif
-                    <span>{{ $item->likedUsers->count() }}</span>
-                </button>
-                </form>
+                    <form action="{{ route('like.toggle', $item->id) }}" method="POST" class="like-form">
+                        @csrf
+                        <button type="submit" class="like-btn">
+                            @if ($item->likedUsers->contains(auth()->id()))
+                                <img src="{{ asset('storage/ハートロゴ_ピンク.png') }}" alt="いいね済み" class="like-icon">
+                            @else
+                                <img src="{{ asset('storage/ハートロゴ_デフォルト.png') }}" alt="いいね" class="like-icon">
+                            @endif
+                            <span>{{ $item->likedUsers->count() }}</span>
+                        </button>
+                    </form>
                 @else
-                {{-- 未ログインは表示のみ --}}
-                <span class="like-display">
-                <img src="{{ asset('storage/ハートロゴ_デフォルト.png') }}" alt="いいね" class="like-icon">
-                <span>{{ $item->likedUsers->count() }}</span>
-                </span>
+                    {{-- 未ログインは表示のみ --}}
+                    <span class="like-display">
+                        <img src="{{ asset('storage/ハートロゴ_デフォルト.png') }}" alt="いいね" class="like-icon">
+                        <span>{{ $item->likedUsers->count() }}</span>
+                    </span>
                 @endauth
 
                 {{-- コメント数 --}}
                 <span class="comment-display">
-                <img src="{{ asset('storage/ふきだしロゴ.png') }}" alt="コメント" class="comment-icon">
-                <span>{{ $item->comments->count() }}</span>
+                    <img src="{{ asset('storage/ふきだしロゴ.png') }}" alt="コメント" class="comment-icon">
+                    <span>{{ $item->comments->count() }}</span>
                 </span>
 
             </div>
@@ -96,37 +95,37 @@
             </div>
 
             {{-- コメント一覧 --}}
-    <div class="comments">
-        <h2>コメント ({{ $item->comments->count() }})</h2>
+            <div class="comments">
+                <h2>コメント ({{ $item->comments->count() }})</h2>
 
-        @foreach ($item->comments as $comment)
-            <div class="comment">
-                <div class="comment-user">
-                    {{ $comment->user->name }}
-                </div>
-                <div class="comment-body">
-                {{ $comment->comment }}  
-    </div>
+                @foreach ($item->comments as $comment)
+                    <div class="comment">
+                        <div class="comment-user">
+                            {{ $comment->user->name }}
+                        </div>
+                        <div class="comment-body">
+                            {{ $comment->comment }}
+                        </div>
+                    </div>
+                @endforeach
             </div>
-        @endforeach
-    </div>
 
-    {{-- コメント投稿（ログインユーザーのみ） --}}
-    @auth
-    <div class="comment-form">
-        <h2>商品へのコメント</h2>
+            {{-- コメント投稿（ログインユーザーのみ） --}}
+            @auth
+                <div class="comment-form">
+                    <h2>商品へのコメント</h2>
 
-        <form action="{{ route('comment.store', $item->id) }}" method="POST">
-            @csrf
-            <textarea name="comment" rows="4" placeholder="コメントを入力してください"></textarea>
-            <button type="submit">コメントを送信する</button>
-        </form>
-    </div>
-    @else
-    <div class="comment-form">
-        <p><a href="{{ route('login') }}">ログイン</a>するとコメントできます。</p>
-    </div>
-    @endauth
+                    <form action="{{ route('comment.store', $item->id) }}" method="POST">
+                        @csrf
+                        <textarea name="comment" rows="4" placeholder="コメントを入力してください"></textarea>
+                        <button type="submit">コメントを送信する</button>
+                    </form>
+                </div>
+            @else
+                <div class="comment-form">
+                    <p><a href="{{ route('login') }}">ログイン</a>するとコメントできます。</p>
+                </div>
+            @endauth
 
 
         </div>

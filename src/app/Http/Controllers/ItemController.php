@@ -11,27 +11,35 @@ use App\Http\Requests\ExhibitionRequest;
 class ItemController extends Controller
 {
     // 商品一覧表示
-        public function index()
+public function index(Request $request)
 {
-    $search = request('search');
+    $query = Item::query();
 
-    if (request('tab') === 'mylist' && auth()->check()) {
-        $items = auth()->user()->likedItems()
-            ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
-            })
-            ->get();
-    } else {
-        $items = Item::query()
-            ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
-            })
-            ->get();
+    // 自分が出品した商品を除外
+    if (auth()->check()) {
+        $query->where('user_id', '!=', auth()->id());
     }
 
-    return view('items.item', compact('items'));
+    // 検索
+    if ($request->search) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
 
+    // マイリスト（いいねした商品）
+    if ($request->tab === 'mylist') {
+    if (auth()->check()) {
+    $likedItemIds = auth()->user()->likes()->pluck('item_id');
+    $query->whereIn('id', $likedItemIds);
+        } else {
+    // 未ログインは何も表示しない
+    $query->whereRaw('1 = 0');
+    }
+        }
+    $items = $query->get();
+
+    return view('items.item', compact('items'));
 }
+
 
     // 商品詳細表示
     public function show(Item $item)
@@ -50,7 +58,7 @@ class ItemController extends Controller
         return view('items.sell' , compact('categories' , 'conditions'));
     }
 
-    // 
+
     public function store(ExhibitionRequest $request)
 {
 
