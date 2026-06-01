@@ -45,13 +45,14 @@
 
     {{-- 商品一覧 --}}
     <div class="mypage__items">
-
       @if(request('page') === 'buy')
         {{-- 購入商品 --}}
         @forelse ($buyItems as $purchase)
           <div class="item">
-            <img src="{{ asset('storage/' . $purchase->item->image) }}" alt="{{ $purchase->item->name }}">
-            <p>{{ $purchase->item->name }}</p>
+            <a href="{{ route('items.show', $purchase->item->id) }}">
+              <img src="{{ asset('storage/' . $purchase->item->image) }}" alt="{{ $purchase->item->name }}">
+              <p>{{ $purchase->item->name }}</p>
+            </a>
           </div>
         @empty
           <p>購入した商品はありません。</p>
@@ -61,14 +62,15 @@
         {{-- 出品商品 --}}
         @forelse ($sellItems as $item)
           <div class="item">
-            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
-            <p>{{ $item->name }}</p>
+            <a href="{{ route('items.show', $item->id) }}">
+              <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
+              <p>{{ $item->name }}</p>
+            </a>
           </div>
         @empty
           <p>出品した商品はありません。</p>
         @endforelse
       @endif
-
     </div>
 
   </div>
