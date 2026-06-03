@@ -10,17 +10,15 @@ class LogoutTest extends TestCase
 {
     use RefreshDatabase;
 
-    // ログアウトができる
+    //③ログアウト機能
     public function test_ログアウトができる()
     {
-        // ユーザーを作成してログイン状態にする
         $user = User::factory()->create([
             'name' => 'テストユーザー',
         ]);
 
         $this->actingAs($user);
 
-        // ログアウトを実行
         $response = $this->post('/logout');
 
         // ログアウトされているか確認

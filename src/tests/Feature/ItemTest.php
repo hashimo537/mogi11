@@ -6,12 +6,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Item;
+use App\Models\Purchase;
 
 class ItemTest extends TestCase
 {
     use RefreshDatabase;
 
-    // ① 全商品を取得できる
+    // ④商品一覧取得
     public function test_全商品が表示される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -30,7 +31,6 @@ class ItemTest extends TestCase
         $response->assertSee('テスト商品');
     }
 
-    // ② 購入済み商品は「Sold」と表示される
     public function test_購入済み商品にSoldが表示される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -50,7 +50,6 @@ class ItemTest extends TestCase
         $response->assertSee('Sold');
     }
 
-    // ③ 自分が出品した商品は表示されない
     public function test_自分が出品した商品は表示されない()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -63,20 +62,18 @@ class ItemTest extends TestCase
             'description' => 'テスト説明',
             'image' => 'test.jpg',
         ]);
-
-        // 同じユーザーでログインして商品一覧を見る
         $response = $this->actingAs($user)->get('/');
         $response->assertStatus(200);
         $response->assertDontSee('自分の商品');
     }
-    // ④ いいねした商品だけが表示される
+    // ⑤マイリスト一覧取得
     public function test_いいねした商品だけが表示される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
-        $otherUser = User::factory()->create(['name' => '他のユーザー']); // 追加
+        $otherUser = User::factory()->create(['name' => '他のユーザー']);
 
         $likedItem = Item::create([
-            'user_id' => $otherUser->id, // 2 → $otherUser->id に変更
+            'user_id' => $otherUser->id,
             'name' => 'いいねした商品',
             'price' => 1000,
             'condition' => 1,
@@ -85,7 +82,7 @@ class ItemTest extends TestCase
         ]);
 
         Item::create([
-            'user_id' => $otherUser->id, // 2 → $otherUser->id に変更
+            'user_id' => $otherUser->id,
             'name' => 'いいねしていない商品',
             'price' => 2000,
             'condition' => 1,
@@ -102,15 +99,13 @@ class ItemTest extends TestCase
         $response->assertSee('いいねした商品');
         $response->assertDontSee('いいねしていない商品');
     }
-
-    // ⑤ マイリストの購入済み商品にSoldが表示される
     public function test_マイリストの購入済み商品にSoldが表示される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
-        $otherUser = User::factory()->create(['name' => '他のユーザー']); // 追加
+        $otherUser = User::factory()->create(['name' => '他のユーザー']);
 
         $soldItem = Item::create([
-            'user_id' => $otherUser->id, // 2 → $otherUser->id に変更
+            'user_id' => $otherUser->id,
             'name' => '購入済みいいね商品',
             'price' => 1000,
             'condition' => 1,
@@ -127,7 +122,25 @@ class ItemTest extends TestCase
         $response = $this->actingAs($user)->get('/?tab=mylist');
         $response->assertSee('Sold');
     }
-    // ⑦ 商品名で部分一致検索ができる
+
+    public function test_未ログイン時はマイリストに何も表示されない()
+    {
+        $user = User::factory()->create();
+
+        $item = Item::create([
+            'user_id' => $user->id,
+            'name' => 'テスト商品',
+            'price' => 1000,
+            'condition' => 1,
+            'description' => '説明',
+            'image' => 'test.jpg',
+        ]);
+
+        $response = $this->get('/?tab=mylist');
+
+        $response->assertDontSee('テスト商品');
+    }
+    // ⑥商品検索機能
     public function test_商品名で部分一致検索ができる()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -156,7 +169,6 @@ class ItemTest extends TestCase
         $response->assertDontSee('全然違う商品');
     }
 
-    // ⑧ 検索状態がマイリストでも保持されている
     public function test_検索状態がマイリストでも保持されている()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -176,11 +188,10 @@ class ItemTest extends TestCase
             'item_id' => $item->id,
         ]);
 
-        // マイリストで検索キーワードを保持して遷移
         $response = $this->actingAs($user)->get('/?tab=mylist&search=テスト');
         $response->assertSee('テスト商品ABC');
     }
-    // ⑨ 商品詳細に必要な情報が表示される
+
     public function test_商品詳細に必要な情報が表示される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -200,10 +211,10 @@ class ItemTest extends TestCase
         $response->assertSee('テスト商品');
         $response->assertSee('テストブランド');
         $response->assertSee('テスト説明文');
-        $response->assertSee('¥1,000');  // ← 修正
+        $response->assertSee('¥1,000');
     }
 
-    // ⑩ 複数選択されたカテゴリが表示される
+    // ⑦ 商品詳細情報取得
     public function test_複数選択されたカテゴリが表示される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -226,7 +237,7 @@ class ItemTest extends TestCase
         $response->assertSee('ファッション');
         $response->assertSee('スポーツ');
     }
-    // ⑪ いいねすると登録される
+    // ⑧ いいね機能
     public function test_いいねすると商品が登録される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -249,7 +260,6 @@ class ItemTest extends TestCase
         ]);
     }
 
-    // ⑫ いいねを解除できる
     public function test_再度いいねを押すといいねが解除される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -275,7 +285,7 @@ class ItemTest extends TestCase
             'item_id' => $item->id,
         ]);
     }
-    // ⑬ ログイン済みユーザーはコメントを送信できる
+    // ⑨コメント送信機能
     public function test_ログイン済みユーザーはコメントを送信できる()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -301,7 +311,6 @@ class ItemTest extends TestCase
         ]);
     }
 
-    // ⑭ 未ログインユーザーはコメントを送信できない
     public function test_未ログインユーザーはコメントを送信できない()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -325,7 +334,6 @@ class ItemTest extends TestCase
         ]);
     }
 
-    // ⑮ コメントが未入力の場合バリデーションメッセージが表示される
     public function test_コメントが未入力の場合バリデーションメッセージが表示される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -347,7 +355,6 @@ class ItemTest extends TestCase
         $response->assertSessionHasErrors(['comment' => 'コメントを入力してください']);
     }
 
-    // ⑯ コメントが255文字以上の場合バリデーションメッセージが表示される
     public function test_コメントが255文字以上の場合バリデーションメッセージが表示される()
     {
         $user = User::factory()->create(['name' => 'テストユーザー']);
@@ -367,5 +374,172 @@ class ItemTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['comment' => 'コメントは255文字以内で入力してください']);
+    }
+    //⑩商品購入機能
+    public function test_購入が完了するとDBに保存される()
+    {
+        $user = User::factory()->create(['name' => 'テストユーザー']);
+        $otherUser = User::factory()->create(['name' => '他のユーザー']);
+
+        $item = Item::create([
+            'user_id' => $otherUser->id,
+            'name' => 'テスト商品',
+            'price' => 1000,
+            'condition' => 1,
+            'description' => 'テスト説明',
+            'image' => 'test.jpg',
+        ]);
+
+        $response = $this->actingAs($user)
+            ->withSession([
+                'shipping_address_' . $item->id => [
+                    'postal_code' => '123-4567',
+                    'address' => 'テスト住所',
+                    'building' => null,
+                ],
+                'purchase_payment_method_' . $item->id => 1, // ← 追加
+            ])
+            ->get('/purchase/' . $item->id . '/success');
+
+        $this->assertDatabaseHas('purchases', [
+            'user_id' => $user->id,
+            'item_id' => $item->id,
+        ]);
+    }
+    public function test_購入した商品はSoldと表示される()
+    {
+        $user = User::factory()->create(['name' => 'テストユーザー']);
+        $otherUser = User::factory()->create(['name' => '他のユーザー']);
+
+        $item = Item::create([
+            'user_id' => $otherUser->id,
+            'name' => '購入テスト商品',
+            'price' => 1000,
+            'condition' => 1,
+            'description' => 'テスト説明',
+            'image' => 'test.jpg',
+            'is_sold' => true,
+        ]);
+
+        $response = $this->get('/');
+        $response->assertSee('Sold');
+    }
+    public function test_購入した商品がマイページに表示される()
+    {
+        $user = User::factory()->create(['name' => 'テストユーザー']);
+        $otherUser = User::factory()->create(['name' => '他のユーザー']);
+
+        $item = Item::create([
+            'user_id' => $otherUser->id,
+            'name' => '購入テスト商品',
+            'price' => 1000,
+            'condition' => 1,
+            'description' => 'テスト説明',
+            'image' => 'test.jpg',
+            'is_sold' => true,
+        ]);
+
+        Purchase::create([
+            'user_id' => $user->id,
+            'item_id' => $item->id,
+            'payment_method' => 1,
+        ]);
+
+        $response = $this->actingAs($user)->get('/mypage?page=buy');
+        $response->assertSee('購入テスト商品');
+    }
+    //１１支払い方法選択機能
+    public function test_支払い方法が小計画面に反映される()
+    {
+        $user = User::factory()->create();
+        $seller = User::factory()->create();
+
+        $item = Item::create([
+            'user_id' => $seller->id,
+            'name' => 'テスト商品',
+            'price' => 1000,
+            'condition' => 1,
+            'description' => '説明',
+            'image' => 'test.jpg',
+        ]);
+
+        $response = $this->actingAs($user)
+            ->withSession([
+                'purchase_payment_method_' . $item->id => 1,
+                'shipping_address_' . $item->id => [
+                    'postal_code' => '123-4567',
+                    'address' => 'テスト住所',
+                    'building' => null,
+                ]
+            ])
+            ->get('/purchase/' . $item->id);
+
+        $response->assertSee('コンビニ払い');
+    }
+    // １２配送先変更機能
+    public function test_配送先変更が購入画面に反映される()
+    {
+        $user = User::factory()->create();
+
+        $seller = User::factory()->create();
+
+        $item = Item::create([
+            'user_id' => $seller->id,
+            'name' => 'テスト商品',
+            'price' => 1000,
+            'condition' => 1,
+            'description' => '説明',
+            'image' => 'test.jpg',
+        ]);
+
+        $response = $this->actingAs($user)
+            ->withSession([
+                'shipping_address_' . $item->id => [
+                    'postal_code' => '123-4567',
+                    'address' => '東京都渋谷区1-1-1',
+                    'building' => 'テストマンション101',
+                ]
+            ])
+            ->get('/purchase/' . $item->id);
+
+        $response->assertSee('123-4567');
+        $response->assertSee('東京都渋谷区1-1-1');
+        $response->assertSee('テストマンション101');
+    }
+
+    public function test_購入時に配送先住所が保存される()
+    {
+        $user = User::factory()->create();
+
+        $seller = User::factory()->create();
+
+        $item = Item::create([
+            'user_id' => $seller->id,
+            'name' => 'テスト商品',
+            'price' => 1000,
+            'condition' => 1,
+            'description' => '説明',
+            'image' => 'test.jpg',
+        ]);
+
+        $this->actingAs($user)
+            ->withSession([
+                'shipping_address_' . $item->id => [
+                    'postal_code' => '123-4567',
+                    'address' => '東京都渋谷区1-1-1',
+                    'building' => 'テストマンション101',
+                ],
+                'purchase_payment_method_' . $item->id => 1,
+            ])
+            ->get('/purchase/' . $item->id . '/success');
+
+        $purchase = Purchase::first();
+
+        $this->assertDatabaseHas('shipping_addresses', [
+            'purchase_id' => $purchase->id,
+            'postal_code' => '123-4567',
+            'address' => '東京都渋谷区1-1-1',
+            'building' => 'テストマンション101',
+        ]);
     }
 }

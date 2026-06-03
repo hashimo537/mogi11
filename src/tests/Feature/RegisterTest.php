@@ -10,7 +10,7 @@ class RegisterTest extends TestCase
 {
     use RefreshDatabase;
 
-    // ① 名前が未入力の場合
+    // ①会員登録機能
     public function test_名前が未入力の場合バリデーションメッセージが表示される()
     {
         $response = $this->post('/register', [
@@ -22,7 +22,6 @@ class RegisterTest extends TestCase
         $response->assertSessionHasErrors(['name' => 'ユーザー名を入力してください']);
     }
 
-    // ② メールアドレスが未入力の場合
     public function test_メールアドレスが未入力の場合バリデーションメッセージが表示される()
     {
         $response = $this->post('/register', [
@@ -33,8 +32,6 @@ class RegisterTest extends TestCase
         ]);
         $response->assertSessionHasErrors(['email' => 'メールアドレスを入力してください']);
     }
-
-    // ③ パスワードが未入力の場合
     public function test_パスワードが未入力の場合バリデーションメッセージが表示される()
     {
         $response = $this->post('/register', [
@@ -46,7 +43,6 @@ class RegisterTest extends TestCase
         $response->assertSessionHasErrors(['password' => 'パスワードを入力してください']);
     }
 
-    // ④ パスワードが7文字以下の場合
     public function test_パスワードが7文字以下の場合バリデーションメッセージが表示される()
     {
         $response = $this->post('/register', [
@@ -58,7 +54,6 @@ class RegisterTest extends TestCase
         $response->assertSessionHasErrors(['password' => 'パスワードは8文字以上で入力してください']);
     }
 
-    // ⑤ パスワードと確認用が一致しない場合
     public function test_パスワードと確認用パスワードが一致しない場合バリデーションメッセージが表示される()
     {
         $response = $this->post('/register', [
@@ -71,7 +66,6 @@ class RegisterTest extends TestCase
     }
 
 
-    // ⑥ 全項目正常入力で登録成功
     public function test_全項目正常入力で会員登録できる()
     {
         $response = $this->post('/register', [
