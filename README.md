@@ -2,7 +2,8 @@
 アイテムの出品と購入を行うためのフリマアプリを開発
 
 ## 環境構築
-git clone git@github.com:hashimo537/mogi11.git
+git clone https://github.com/hashimo537/mogi11.git
+
 cd mogi11
 
 docker-compose up -d --build
