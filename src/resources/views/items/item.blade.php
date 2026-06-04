@@ -26,7 +26,7 @@
             <div class="item-card">
                 <a href="{{ route('items.show', $item->id) }}">
                     <div class="image">
-                        <img src="{{ asset('storage/' . $item->image) }}" alt="">
+                        <img src="{{ Str::startsWith($item->image, 'http') ? $item->image : asset('storage/' . $item->image) }}" alt="">
                         @if ($item->is_sold)
                             <span class="sold">Sold</span>
                         @endif

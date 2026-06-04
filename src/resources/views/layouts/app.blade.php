@@ -15,7 +15,7 @@
     <div class="header__inner">
 
         {{-- ヘッダーロゴ：クリックでホーム画面へ --}}
-        <a class="header__logo" href="/"><img src="{{ asset('storage/coachtech-logo.png') }}" alt="coachtech"></a>
+        <a class="header__logo" href="/"><img src="{{ asset('images/coachtech-logo.png') }}" alt="coachtech"></a>
 
 
         {{-- ログイン・会員登録・サンクス画面以外の場合のみ表示 --}}

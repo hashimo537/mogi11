@@ -10,7 +10,7 @@
 
         {{-- 左：商品画像 --}}
         <div class="item-image">
-            <img src="{{ asset('storage/' . $item->image) }}" alt="alt={{ $item->name }}">
+            <img src="{{ Str::startsWith($item->image, 'http') ? $item->image : asset('storage/' . $item->image) }}" alt="alt={{ $item->name }}">
 
             @if ($item->is_sold)
                 <span class="sold">Sold</span>
@@ -38,9 +38,9 @@
                         @csrf
                         <button type="submit" class="like-btn">
                             @if ($item->likedUsers->contains(auth()->id()))
-                                <img src="{{ asset('storage/ハートロゴ_ピンク.png') }}" alt="いいね済み" class="like-icon">
+                                <img src="{{ asset('images/ハートロゴ_ピンク.png') }}" alt="いいね済み" class="like-icon">
                             @else
-                                <img src="{{ asset('storage/ハートロゴ_デフォルト.png') }}" alt="いいね" class="like-icon">
+                                <img src="{{ asset('images/ハートロゴ_デフォルト.png') }}" alt="いいね" class="like-icon">
                             @endif
                             <span>{{ $item->likedUsers->count() }}</span>
                         </button>
@@ -48,14 +48,14 @@
                 @else
                     {{-- 未ログインは表示のみ --}}
                     <span class="like-display">
-                        <img src="{{ asset('storage/ハートロゴ_デフォルト.png') }}" alt="いいね" class="like-icon">
+                        <img src="{{ asset('images/ハートロゴ_デフォルト.png') }}" alt="いいね" class="like-icon">
                         <span>{{ $item->likedUsers->count() }}</span>
                     </span>
                 @endauth
 
                 {{-- コメント数 --}}
                 <span class="comment-display">
-                    <img src="{{ asset('storage/ふきだしロゴ.png') }}" alt="コメント" class="comment-icon">
+                    <img src="{{ asset('images/ふきだしロゴ.png') }}" alt="コメント" class="comment-icon">
                     <span>{{ $item->comments->count() }}</span>
                 </span>
 

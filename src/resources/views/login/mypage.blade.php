@@ -50,7 +50,7 @@
         @forelse ($buyItems as $purchase)
           <div class="item">
             <a href="{{ route('items.show', $purchase->item->id) }}">
-              <img src="{{ asset('storage/' . $purchase->item->image) }}" alt="{{ $purchase->item->name }}">
+              <img src="{{ Str::startsWith($purchase->item->image, 'http') ? $purchase->item->image : asset('storage/' . $purchase->item->image) }}" alt="{{ $purchase->item->name }}">
               <p>{{ $purchase->item->name }}</p>
             </a>
           </div>
@@ -63,7 +63,7 @@
         @forelse ($sellItems as $item)
           <div class="item">
             <a href="{{ route('items.show', $item->id) }}">
-              <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
+              <img src="{{ Str::startsWith($item->image, 'http') ? $item->image : asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
               <p>{{ $item->name }}</p>
             </a>
           </div>
