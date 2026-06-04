@@ -77,8 +77,8 @@ body {
 }
 
 
-/* --- スマホ用（600px以下に適用） --- */
-@media (max-width: 600px) {
+/* --- タブレット用（768px以下に適用） --- */
+@media (max-width: 768px) {
 
     .header__inner {
         flex-wrap: wrap;
@@ -86,21 +86,26 @@ body {
 
     .header__search-form {
         order: 3;
-        /* 検索を3番目に移動 */
-        width: 80%;
+        width: 100%;
         flex: none;
+        margin: 5px 0;
     }
 
     .header__logo {
         order: 1;
-        /* ロゴを1番目 */
     }
 
     .nav {
         order: 2;
-        /* navを2番目 */
         margin-left: auto;
-        /* ロゴと反対側に寄せる */
+    }
+}
+
+/* --- スマホ用（600px以下に適用） --- */
+@media (max-width: 600px) {
+
+    .header__search-form {
+        width: 100%;
     }
 }
 

@@ -1,4 +1,5 @@
 ## COACHTECHフリマ
+アイテムの出品と購入を行うためのフリマアプリを開発
 
 ## 環境構築
 git clone git@github.com:hashimo537/mogi11.git
@@ -6,7 +7,7 @@ cd mogi11
 
 docker-compose up -d --build
 
-## Laravel環境構築
+## Laravel環境構築（以下コンテナ内で実行）
 docker-compose exec php bash
 
 composer install
@@ -16,8 +17,13 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate
 php artisan db:seed
+php artisan storage:link
 
-stripeテストキーを設定してください。
+## Stripe設定
+.envにstripeテストキーを設定してください。
+STRIPE_KEY=your_stripe_public_key
+STRIPE_SECRET=your_stripe_secret_key
+
 
 M1/M2 Mac をお使いの場合は、docker-compose.yml の該当サービスに platform: linux/amd64 を追加してください。
 
