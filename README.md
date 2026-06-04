@@ -17,6 +17,8 @@ php artisan key:generate
 php artisan migrate
 php artisan db:seed
 
+stripeテストキーを設定してください。
+
 M1/M2 Mac をお使いの場合は、docker-compose.yml の該当サービスに platform: linux/amd64 を追加してください。
 
 
