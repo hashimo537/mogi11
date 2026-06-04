@@ -19,7 +19,7 @@
                     {{-- 商品情報 --}}
                     <div class="purchase-item">
                         <div class="purchase-item-image">
-                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
+                            <img src="{{ Str::startsWith($item->image, 'http') ? $item->image : asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
                         </div>
                         <div class="purchase-item-info">
                             <p class="purchase-item-name">{{ $item->name }}</p>
